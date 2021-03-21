@@ -1,16 +1,21 @@
 import base64
 import gzip
 from pathlib import Path
+import subprocess
 
 
 template = r"""
-import base64
-import gzip
-from pathlib import Path
-
+'''
+{GIT_INFO}
+'''
 
 # base64-encoded file contents
 file_data = {"file_data": ""}
+
+
+import base64
+import gzip
+from pathlib import Path
 
 
 for path, encoded in file_data.items():
@@ -21,8 +26,41 @@ for path, encoded in file_data.items():
 
 print("*** Started to run ***")
 
+
 !python main.py
 """
+
+
+def run(*args_list):
+    out_list = []
+    for args in args_list:
+        r = subprocess.run(
+            args,
+            capture_output=True,
+            encoding="utf-8",
+        ).stdout
+        out_list.append(r)
+    return out_list
+
+
+def get_git_info():
+
+    return "\n".join(
+        run(
+            [
+                "git",
+                "log",
+                "--pretty=format: %h %ad %s",
+                "--date=iso",
+                "-1",
+            ],
+            [
+                "git",
+                "status",
+                "--porcelain",
+            ],
+        )
+    )
 
 
 def encode_file(path: Path) -> str:
@@ -71,7 +109,10 @@ def build_script():
             file_data[str(p)] = encoded
 
     Path("_one_code.py").write_text(
-        template.replace('{"file_data": ""}', str(file_data)), encoding="utf8"
+        template.replace("{GIT_INFO}", get_git_info()).replace(
+            '{"file_data": ""}', str(file_data)
+        ),
+        encoding="utf8",
     )
     print("*** Completed to build all-in-one-code ***")
 
