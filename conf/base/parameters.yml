@@ -1,2 +1,1 @@
-# parameters.yml
-hello_param: "Hello, World!"
+hello_param: "Hello from parameters.yml!"
