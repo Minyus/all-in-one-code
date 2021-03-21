@@ -21,7 +21,6 @@ for path, encoded in file_data.items():
 
 print("*** Started to run ***")
 
-!export PYTHONPATH=${PYTHONPATH}:${PWD}
 !python main.py
 """
 
