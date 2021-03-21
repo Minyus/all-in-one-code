@@ -36,3 +36,5 @@ This repository was developed based on [kaggle-script-template](https://github.c
 - Simplified by removing `setup.py` and embedding the template to the code to build.
 
 - Clarified by renaming.
+
+- Support to include the Git commit and status info for experiment tracking. 
