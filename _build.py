@@ -38,7 +38,7 @@ def build_script():
             p.is_file()
             and not str(p).startswith(".git")
             and p.stem != "README"
-            and p.suffix != "pyc"
+            and "__pycache__" not in str(p)
             and p.name not in {"_build.py", "_one_code.py"}
         ):
             print("[Encoding] " + str(p))
