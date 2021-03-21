@@ -36,12 +36,39 @@ def build_script():
         if (
             p.is_file()
             and not str(p).startswith(".git")
-            and p.stem != "README"
-            and "__pycache__" not in str(p)
-            and p.name not in {"_build.py", "_one_code.py"}
+            and not str(p).startswith(".vscode")
+            and not str(p).startswith(".idea")
+            and ".dist-info/RECORD" not in str(p)
+            and p.name not in {"_one_code.py", "_build.py", ".gitignore", ".DS_Store"}
+            and p.suffix
+            not in {
+                ".pyc",
+                ".html",
+                ".js",
+                ".css",
+                ".svg",
+                ".png",
+                ".jpeg",
+                ".jpg",
+                ".md",
+                ".rst",
+                ".log",
+            }
         ):
-            print("[Encoding] " + str(p))
-            file_data[str(p)] = encode_file(p)
+            # Skip non-ascii files
+            try:
+                p.read_text(encoding="ascii")
+            except ValueError:
+                continue
+
+            encoded = encode_file(p)
+            if p.suffix not in {".py"} and len(encoded) >= 3000:
+                print(
+                    "[Warning] Large File: {}, Encoded length: {}".format(
+                        str(p), len(encoded)
+                    )
+                )
+            file_data[str(p)] = encoded
 
     Path("_one_code.py").write_text(
         template.replace('{"file_data": ""}', str(file_data)), encoding="utf8"
