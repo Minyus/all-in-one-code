@@ -7,7 +7,7 @@
 
 1. Copy `_build.py` to your (local) repository root directory.
 
-2. Open `_build.py` and modify the last line of `template` (`!python main.py`) if your main code is not `main.py`. 
+2. Open `_build.py` and modify the last line of `template` (`!bash run.sh`) to run your code.
 
 3. Run:
 

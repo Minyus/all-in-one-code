@@ -2,3 +2,5 @@
 !/_build.py
 !/README.md
 !/.gitignore
+!/run.sh
+!/main.py

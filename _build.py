@@ -26,8 +26,7 @@ for path, encoded in file_data.items():
 
 print("*** Started to run ***")
 
-
-!python main.py
+!bash run.sh
 """
 
 
