@@ -68,6 +68,9 @@ def encode_file(path: Path) -> str:
 
 
 def build_script():
+    git_info = get_git_info()
+    print(git_info)
+
     file_data = {}
     for p in Path(".").rglob("*"):
         if (
@@ -108,7 +111,7 @@ def build_script():
             file_data[str(p)] = encoded
 
     Path("_one_code.py").write_text(
-        template.replace("{GIT_INFO}", get_git_info()).replace(
+        template.replace("{GIT_INFO}", git_info).replace(
             '{"file_data": ""}', str(file_data)
         ),
         encoding="utf8",
